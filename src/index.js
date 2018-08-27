@@ -66,14 +66,7 @@ class Game extends React.Component {
     );
   }
 }
-
-
 // ========================================
-
-ReactDOM.render(
-  React.createElement(TextBlock),
-  document.getElementById('root')
-);
 
 
 function TextBlock(){
@@ -83,5 +76,48 @@ function TextBlock(){
    'text'
 );
 }
+
+class ImageWrapper extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {image : ''}
+  }
+  render(){
+    return React.createElement(
+      'div',
+      {className: 'image-wrapper'},
+      React.createElement(Img, {source: this.state.image} ),
+      React.createElement(ChangeImageButton, {getImage: this.getImage} ),
+    )
+  }
+}
+
+function Img(props) {
+  return React.createElement(
+    'img',
+    { src : 'props.source'}
+  )
+}
+
+function ChangeImageButton(props){
+  return React.createElement(
+    'button',
+    { onClick: props.getImage},
+    'Change Dog'
+  )
+}
+
+
+// ========================================
+
+
+
+ReactDOM.render(
+  React.createElement(TextBlock),
+  document.getElementById('root')
+);
+
+
+
 
 
