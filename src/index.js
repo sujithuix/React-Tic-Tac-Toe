@@ -1,123 +1,82 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import PropTypes from 'prop-types';
 
-class Square extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      value :null,
-    };
-  }
-  render() {
-    return (
-      <button className="square" onClick={() => {this.setState({ value : 'X'})}}>
-        {this.state.number}
-      </button>
-    );
-  }
+import './index.css'
+
+class App extends Component {
+    constructor(props) {
+        super();
+    }
+    render() {
+        return (
+            <div className="app-component">
+                <p>App Component</p>
+                <ParentComponent />
+            </div>
+        );
+    }
 }
 
 
-class Board extends React.Component {
-  renderSquare(i) {
-    return <Square number={i} />;
-  }
+class ParentComponent extends Component {
+    constructor(props) {
+        super();
+    }
+    render() {
+        const hobbies = ["Driving", "Music"];
 
-  render() {
-    const status = 'Next player: X';
-
-    return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
+        const sex = {
+            male: 'Male',
+            female: 'Female',
+        }
+        return (
+            <div className="parent-component">
+            <p>Parent Component</p>
+                <ChildComponent name={"Sujith"} age={"31"} sex={sex} hobbies={hobbies}>
+                <p>Text inside Child Component</p>
+                </ChildComponent>
+            </div>
+        );
+    }
 }
 
 
-class Game extends React.Component {
-  render() {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-// ========================================
-
-
-function TextBlock(){
-  return React.createElement(
-  'Textblock',
-   {id:'TextBlock'},
-   'text'
-);
-}
-
-class ImageWrapper extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {image : ''}
-  }
-  render(){
-    return React.createElement(
-      'div',
-      {className: 'image-wrapper'},
-      React.createElement(Img, {source: this.state.image} ),
-      React.createElement(ChangeImageButton, {getImage: this.getImage} ),
-    )
-  }
+class ChildComponent extends Component {
+    constructor(props) {
+        super();
+    }
+    render() {
+        return (
+            <div className="child-component">
+                <p>Child Component</p>
+                <div>
+                    <p>Name is {this.props.name}</p>
+                    <p>Age is {this.props.age}</p>
+                    <p>Sex is {this.props.sex.male}</p>
+                    <p>Hobbies are: {this.props.hobbies.join(', ')}</p>
+                    <p>Hobbies are: (in list using maps)</p>
+                    <ul>
+                        {this.props.hobbies.map(
+                            (hobby,k) => <li key={k}>{hobby}</li>
+                        )}
+                    </ul>
+                    {this.props.children}
+                </div>
+            </div>
+        );
+    }
 }
 
-function Img(props) {
-  return React.createElement(
-    'img',
-    { src : 'props.source'}
-  )
+ParentComponent.propTypes  = {
+  name: PropTypes.string,
+  age: PropTypes.number,
+  sex: PropTypes.object,
+  hobbies: PropTypes.array,
 }
 
-function ChangeImageButton(props){
-  return React.createElement(
-    'button',
-    { onClick: props.getImage},
-    'Change Dog'
-  )
-}
+export default App;
 
 
-// ========================================
-
-
-
-ReactDOM.render(
-  React.createElement(TextBlock),
-  document.getElementById('root')
-);
-
-
-
-
-
+ReactDOM.render(<App />, document.getElementById('root'))
